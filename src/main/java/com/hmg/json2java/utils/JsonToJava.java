@@ -46,6 +46,8 @@ public class JsonToJava {
 		source.append("public class " + classShortName + " {\r\n");
 		source.append("\r\n");
 		ArrayList<DynamicJavaSourceMap> dependentClasses = new ArrayList<DynamicJavaSourceMap>();
+		
+		//Define Fields
 		for (String key : map.keySet()) {
 			Object value = map.get(key);
 			String className = value.getClass().getName();
@@ -60,11 +62,21 @@ public class JsonToJava {
 			} else if (className.contentEquals(ArrayList.class.getName())) {
 				source.append("java.util.ArrayList<java.lang.Object> " + key
 						+ " = new java.util.ArrayList<java.lang.Object> ();\r\n");
-			} else {
+			} else if (className.contentEquals(java.lang.Integer.class.getName())) {
+				source.append("java.lang.Integer " + key+ ";\r\n");
+			}  else if (className.contentEquals(java.lang.Long.class.getName())) {
+				source.append("java.lang.Long " + key+ ";\r\n");
+			} else if (className.contentEquals(java.lang.Boolean.class.getName())) {
+				source.append("java.lang.Boolean " + key+ ";\r\n");
+			} 
+						
+			else {
 				System.err.println("!!! Unrecognized Class Type:" + className);
 			}
 		}
 		source.append("\r\n");
+		
+		//Define Getters and Setters
 		for (String key : map.keySet()) {
 			Object value = map.get(key);
 			String className = value.getClass().getName();
@@ -99,6 +111,11 @@ public class JsonToJava {
 		return packageName;
 	}
 
+	/***
+	 * First LetterCapital
+	 * @param exp
+	 * @return
+	 */
 	public static String fC(String exp) {
 		if (exp != null && exp.length() > 0) {
 			return exp.substring(0, 1).toUpperCase() + exp.substring(1, exp.length());

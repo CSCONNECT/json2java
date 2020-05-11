@@ -23,6 +23,7 @@ import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import javax.tools.SimpleJavaFileObject;
 import javax.tools.ToolProvider;
+import javax.tools.JavaCompiler.CompilationTask;
 import javax.tools.JavaFileManager.Location;
 
 import sun.misc.Unsafe;
@@ -36,6 +37,7 @@ public class JavaSourceToObject {
 	private static JavaFileManager getFileManager() {
 		synchronized (oLock) {
 			if (javaFileManager == null) {
+				try {
 				javaFileManager = new ForwardingJavaFileManager(
 						ToolProvider.getSystemJavaCompiler().getStandardFileManager(new DiagnosticListener() {
 
@@ -52,7 +54,10 @@ public class JavaSourceToObject {
 						System.out.println(" pool.get(className):" + className);
 						return pool.get(className);
 					}
-				};
+				};}catch (Exception e) {
+					System.err.println("Be sure that using a JDK, not JRE ! detail:"+e.getMessage());
+					throw e;
+				}
 			}
 
 			return javaFileManager;
@@ -84,7 +89,8 @@ public class JavaSourceToObject {
 
 		pool.put((packageName + "." + className), simpleJavaFileObject);
 
-		ToolProvider.getSystemJavaCompiler().getTask(null, getFileManager(), null, null, null, pool.values()).call();
+		CompilationTask task = ToolProvider.getSystemJavaCompiler().getTask(null, getFileManager(), null, null, null, pool.values());
+		task.call();
 
 		byte[] bytes = byteArrayOutputStream.toByteArray();
 		if (bytes.length == 0) {
