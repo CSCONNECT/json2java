@@ -66,9 +66,13 @@ public class JsonToJava {
 				source.append("java.lang.Integer " + key+ ";\r\n");
 			}  else if (className.contentEquals(java.lang.Long.class.getName())) {
 				source.append("java.lang.Long " + key+ ";\r\n");
+			}  else if (className.contentEquals(java.lang.Double.class.getName())) {
+				source.append("java.lang.Double " + key+ ";\r\n");
 			} else if (className.contentEquals(java.lang.Boolean.class.getName())) {
 				source.append("java.lang.Boolean " + key+ ";\r\n");
 			} 
+			
+			
 						
 			else {
 				System.err.println("!!! Unrecognized Class Type:" + className);
