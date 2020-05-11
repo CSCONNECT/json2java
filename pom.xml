@@ -10,9 +10,9 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.hmg</groupId>
-	<artifactId>spring-json2java</artifactId>
+	<artifactId>json2java</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-json2java</name>
+	<name>json2java</name>
 	<description>JSON to JAVA Dynamic Ojbect Creation</description>
 
 	<properties>
