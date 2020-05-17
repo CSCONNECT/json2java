@@ -1,6 +1,7 @@
 package com.hmg.json2java.utils;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -22,7 +23,7 @@ public class JsonToJava {
 		return instantiateDynamicClassesMap(javaSrcMap);
 	}
 	
-	public static Object instantiateDynamicClassesMap(DynamicJavaSourceMap javaSrcMap) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchFieldException, URISyntaxException {
+	public static Object instantiateDynamicClassesMap(DynamicJavaSourceMap javaSrcMap) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchFieldException, URISyntaxException, SecurityException, IllegalArgumentException, IOException {
 		Object result=null;
 		if (javaSrcMap.dependentClasses.size() > 0) {
 			for (DynamicJavaSourceMap dynamicSource : javaSrcMap.dependentClasses) {
@@ -42,8 +43,11 @@ public class JsonToJava {
 		String classShortName = getShortClassNameFromFullName(classFullName);
 		String packageName = getPackageNameFromFullName(classFullName);
 		source.append("package " + packageName + ";\r\r\n");
-
-		source.append("public class " + classShortName + " {\r\n");
+		source.append("import java.io.Serializable;\r\n");
+		source.append("\r\n");
+		source.append("public class " + classShortName + " implements Serializable  {\r\n");
+		source.append("\r\n");
+		source.append("private static final long serialVersionUID = 1L;\r\n");
 		source.append("\r\n");
 		ArrayList<DynamicJavaSourceMap> dependentClasses = new ArrayList<DynamicJavaSourceMap>();
 		

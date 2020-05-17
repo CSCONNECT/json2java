@@ -13,6 +13,7 @@ import org.junit.runners.MethodSorters;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.hmg.json2java.utils.JsonToJava;
+import com.hmg.json2java.utils.ObjectFileWriter;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class JsonToJavaObjectTest {
@@ -46,6 +47,8 @@ public class JsonToJavaObjectTest {
 		Object o = JsonToJava.jsonToJavaObject(json);
 
 		assertTrue(o.getClass().getName().equals(DYNAMIC_CLASS_NAME));
+		
+
 	}
 
 }
