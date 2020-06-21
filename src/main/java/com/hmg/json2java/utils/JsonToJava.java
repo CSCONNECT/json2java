@@ -64,8 +64,41 @@ public class JsonToJava {
 				source.append(tab + "private " + fName + " " + key + ";\r\n");
 				dependentClasses.add(readJsontoJava((LinkedHashMap) value, ""));
 			} else if (className.contentEquals(ArrayList.class.getName())) {
-				source.append("java.util.ArrayList<java.lang.Object> " + key
-						+ " = new java.util.ArrayList<java.lang.Object> ();\r\n");
+				//by default object array
+				String arrayMemberType="java.lang.Object";
+				//if there is item						
+				if(((ArrayList)value).size()>0)
+				{
+					arrayMemberType=((ArrayList)value).get(0).getClass().getTypeName();
+					//if it's a map
+					if(arrayMemberType.equals(LinkedHashMap.class.getName()))
+					{
+						LinkedHashMap complexProp=(LinkedHashMap) ((ArrayList)value).get(0);
+						Object specificClassMember=complexProp.get("className");
+						//if complex type has a className attrib
+						if(specificClassMember!=null)
+						{
+							//try to create member class
+							try {
+							ObjectMapper mapper = new ObjectMapper();
+							String jsonValue=mapper.writeValueAsString(complexProp);
+							jsonToJavaObject(jsonValue);
+							}catch (Exception e) {
+								System.err.println("e inner:"+e);
+							}
+							
+							//use array member class
+							arrayMemberType=specificClassMember.toString();
+						}
+
+					}
+				}
+				
+				
+				
+				source.append("java.util.ArrayList<"+arrayMemberType+"> " + key
+						+ " = new java.util.ArrayList<"+arrayMemberType+"> ();\r\n");
+				System.out.println(source);
 			} else if (className.contentEquals(java.lang.Integer.class.getName())) {
 				source.append("java.lang.Integer " + key+ ";\r\n");
 			}  else if (className.contentEquals(java.lang.Long.class.getName())) {
