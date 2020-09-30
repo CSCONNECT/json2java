@@ -34,11 +34,24 @@
 
 	<build>
 		<plugins>
-			<!--plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin-->
+			<!--plugin> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-maven-plugin</artifactId> 
+				</plugin -->
 		</plugins>
 	</build>
-
+	<repositories>
+		<repository>
+			<id>central</id>
+			<url>http://10.80.100.155:8085/repository/vidaptor-group/</url>
+		</repository>
+	</repositories>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>vidaptor-snapshots</id>
+			<url>http://10.80.100.155:8085/repository/vidaptor-snapshots/</url>
+		</snapshotRepository>
+		<repository>
+			<id>vidaptor-releases</id>
+			<url>http://10.80.100.155:8085/repository/vidaptor-releases/</url>
+		</repository>
+	</distributionManagement>
 </project>
